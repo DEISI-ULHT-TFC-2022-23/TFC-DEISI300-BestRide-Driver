@@ -103,8 +103,8 @@ export class FormProfessionalPage implements OnInit {
         ...this.professionalForm,
         "emergency_contact": {
           name: this.professionalForm.get('emerg_contact_name').value,
-          phone: this.professionalForm.get('emerg_contact_phone').value,
-          relation: this.professionalForm.get('emerg_contact_relation').value,
+          phone: '' + this.professionalForm.get('emerg_contact_phone').value,
+          relation: this.professionalForm.get('emerg_contact_relation').value
         }
       };
       console.log(data);
