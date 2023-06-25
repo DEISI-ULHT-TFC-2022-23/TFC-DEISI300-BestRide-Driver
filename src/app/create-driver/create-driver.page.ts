@@ -5,6 +5,7 @@ import { DriverServiceService } from './driver-service.service';
 import { CountryCode } from './countryCode';
 import { Country } from './country';
 import { Language } from './language';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-create-driver',
@@ -19,6 +20,7 @@ export class CreateDriverPage implements OnInit {
   public languageList: Array<Language>
   public hidePass = true;
   public hideRepeatPass = true;
+  public event : Event;
 
   /* Password */
   public hide = true;
@@ -27,7 +29,8 @@ export class CreateDriverPage implements OnInit {
   constructor(
     public formBuilder: FormBuilder,
     private router: Router,
-    private serviceDriver: DriverServiceService
+    private serviceDriver: DriverServiceService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit() {
@@ -136,7 +139,7 @@ export class CreateDriverPage implements OnInit {
     const file = event.target.files[0];
     const imageUrl = URL.createObjectURL(file)
     const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl)
-    this.professionalForm.get('' + variable).setValue(sanitizedUrl);
+    this.driverForm.get('' + variable).setValue(sanitizedUrl);
 
   }
 

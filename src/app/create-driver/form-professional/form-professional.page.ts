@@ -99,16 +99,15 @@ export class FormProfessionalPage implements OnInit {
       return false;
     } else {
       const data = {
-        first_page: this.receivedData,
-        second_page: this.professionalForm,
+        ...this.receivedData,
+        ...this.professionalForm,
+        "emergency_contact": {
+          name: this.professionalForm.get('emerg_contact_name').value,
+          phone: this.professionalForm.get('emerg_contact_phone').value,
+          relation: this.professionalForm.get('emerg_contact_relation').value,
+        }
       };
-
-      const data_emergency = {
-        name: this.professionalForm.get('emerg_contact_name').value,
-        phone: this.professionalForm.get('emerg_contact_phone').value,
-        relation: this.professionalForm.get('emerg_contact_relation').value,
-      };
-      this.driverService.create_emergency(data_emergency);
+      console.log(data);
       this.driverService.create_contact(data);
     }
   }
