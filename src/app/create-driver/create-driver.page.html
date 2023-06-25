@@ -207,6 +207,18 @@
             </mat-error>
           </mat-form-field>
 
+          <div class="ion-text-center ion-justify-content-center" style="display: flex;">
+            <ion-avatar *ngIf="this.driverForm.get('profile_photo').value !== '' ">
+              <img [src]="this.professionalForm.get('profile_photo').value">
+            </ion-avatar>
+          </div>
+
+          <ion-button fill="outline" id="img_upload" (click)="f1.click()">
+            <input class="ion-hide" #f1 type="file" (change)="loadImagePH_DOC($event,'profile_photo')" id="file-input"
+              accept="image/png, image/jpeg">
+            Upload Profile Photo
+          </ion-button>
+
           <ion-row>
             <ion-col size="4">
               <mat-form-field appearance="outline">

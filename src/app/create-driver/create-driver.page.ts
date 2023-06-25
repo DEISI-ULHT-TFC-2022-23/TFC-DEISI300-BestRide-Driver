@@ -63,6 +63,7 @@ export class CreateDriverPage implements OnInit {
         country: ['Portugal', Validators.required],
         city: ['', Validators.required],
         companyName: ['', Validators.required],
+        profile_photo: [''],
         companyAddress: ['', Validators.required],
         p_indCompany: ['+351', Validators.required],
         companyPhone: ['', Validators.required],
@@ -125,6 +126,18 @@ export class CreateDriverPage implements OnInit {
 
   get errorControl() {
     return this.driverForm.controls;
+  }
+
+  async loadImagePH_DOC(event: any, variable: String) {
+    this.event = event;
+    if(event.target.files.length == 0){
+      return;
+    }
+    const file = event.target.files[0];
+    const imageUrl = URL.createObjectURL(file)
+    const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl)
+    this.professionalForm.get('' + variable).setValue(sanitizedUrl);
+
   }
 
   getDate(e) {

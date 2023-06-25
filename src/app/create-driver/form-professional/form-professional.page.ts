@@ -13,8 +13,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class FormProfessionalPage implements OnInit {
   public submited = false;
   public professionalForm: FormGroup;
-  private receivedData: any;
   public event: Event;
+  private receivedData: any;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -45,7 +45,6 @@ export class FormProfessionalPage implements OnInit {
       emerg_contact_name: ['', Validators.required],
       emerg_contact_phone: ['', Validators.required],
       emerg_contact_relation: ['', Validators.required],
-      profile_photo: [''],
       driver_type: ['', Validators.required],
       about: ['', Validators.required],
       video: [''],
