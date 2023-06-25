@@ -1,6 +1,3 @@
-* {
-  font-weight: 800;
-}
 
 ion-card {
   h1 {
@@ -65,40 +62,4 @@ mat-form-field.mat-form-field {
 
 ion-datetime {
   padding-left: 5%;
-}
-
-form {
-  text-align: center;
-}
-
-@media (max-width: 576px) {
-  mat-form-field.mat-form-field {
-    color: black;
-    width: 100%;
-  }
-
-  ion-toolbar {
-    img {
-      height: 70px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
-}
-
-@media (min-width: 820px) {
-  mat-form-field.mat-form-field {
-    color: black;
-    width: 100%;
-  }
-
-  ion-toolbar {
-    img {
-      height: 70px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
 }

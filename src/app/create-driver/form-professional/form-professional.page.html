@@ -1,33 +1,26 @@
 <ion-header>
   <ion-toolbar>
-    <img src="../assets/br_new_logo.png">
     <ion-buttons slot="start">
       <ion-back-button text="" icon="arrow-back" defaultHref="user-choise" color="dark"></ion-back-button>
     </ion-buttons>
+    <ion-title>{{ 'Create Driver' | customTranslate | async }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-grid>
-    <ion-card>
+    <ion-card class="ion-text-center">
       <ion-card-content>
-        <h1>{{ 'Driver Form' | customTranslate | async }}</h1>
         <form [formGroup]="professionalForm" (ngSubmit)="submitForm()" novalidate>
-
-          <div class="ion-text-center">
-            <ion-avatar *ngIf="this.professionalForm.get('profile_photo').value != ''">
-              <img [src]="this.professionalForm.get('profile_photo').value">
-            </ion-avatar>
-          </div>
           <br>
           <div class="ion-text-center">
             <div *ngIf="this.professionalForm.get('docImage').value != ''">
-              <img [src]="this.professionalForm.get('docImage').value">
+              <img [src]="this.professionalForm.get('docImage').value" style="height: 200px;">
             </div>
           </div>
 
           <ion-button fill="outline" id="img_upload" (click)="f.click()">
-            <input class="ion-hide" #f type="file" (change)="loadImagePH_DOC($event,'docImage')" id="file-input"
+            <input class="ion-hide" #f type="file" (change)="loadImagePH_DOC($event,'docImage')"id="file-input"
               accept="image/png, image/jpeg">
             {{ 'Upload BI Document' | customTranslate | async}}
           </ion-button>
@@ -127,6 +120,12 @@
               {{ 'Field is Required' | customTranslate |async}}
             </mat-error>
           </mat-form-field>
+
+          <div class="ion-text-center ion-justify-content-center" style="display: flex;">
+            <ion-avatar *ngIf="this.professionalForm.get('profile_photo').value != ''">
+              <img [src]="this.professionalForm.get('profile_photo').value">
+            </ion-avatar>
+          </div>
 
           <ion-button fill="outline" id="img_upload" (click)="f1.click()">
             <input class="ion-hide" #f1 type="file" (change)="loadImagePH_DOC($event,'profile_photo')" id="file-input"

@@ -1,21 +1,16 @@
 <ion-header>
   <ion-toolbar>
-    <img src="../assets/br_new_logo.png">
     <ion-buttons slot="start">
       <ion-back-button text="" icon="arrow-back" defaultHref="user-choise" color="dark"></ion-back-button>
     </ion-buttons>
+    <ion-title>{{ 'Create Driver' | customTranslate | async }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-
-
-
 <ion-content>
   <ion-grid>
-    <ion-card>
+    <ion-card class="iom-text-center">
       <ion-card-content>
-        <h1>{{ 'Driver Form'| customTranslate | async }}</h1>
-        <br>
         <form [formGroup]="driverForm" (ngSubmit)="submitForm()" novalidate>
 
           <mat-form-field appearance="outline">
@@ -67,8 +62,8 @@
                 {{'Password is Required' | customTranslate | async}}
               </mat-error>
             </mat-form-field>
-            
-            
+
+
           <mat-error class="error" *ngIf="isSubmitted && driverForm.errors?.mismatch">
             {{'Password and Confirm Password must be match.' | customTranslate | async}}
           </mat-error>
@@ -257,18 +252,18 @@
                 <mat-option value="scooter">Scooter</mat-option>
                 <mat-option value="foot">On Foot</mat-option>
                 <mat-option value="van">Van (up to 9 seats)</mat-option>
-                <mat-option value="calhambeque">Calhambeque (Jalopy)</mat-option>      
+                <mat-option value="calhambeque">Calhambeque (Jalopy)</mat-option>
                 <mat-optgroup label="Tuk Tuk">
                   <mat-option value="limo">Limousine</mat-option>
                   <mat-option value="micro">Micróbio (Microbe)</mat-option>
                   <mat-option value="equad">eQuad</mat-option>
-                  <mat-option value="traineira">Traineira (Trawler)</mat-option>         
+                  <mat-option value="traineira">Traineira (Trawler)</mat-option>
                 </mat-optgroup>
                 <mat-optgroup label="Boat">
                   <mat-option value="marinheiro">Carta de Marinheiro</mat-option>
                   <mat-option value="local">Carta de Patrão Local</mat-option>
                   <mat-option value="costa">Carta de Patrão de Costa</mat-option>
-                  <mat-option value="altoMar">Carta de Patrão Alto Mar</mat-option>   
+                  <mat-option value="altoMar">Carta de Patrão Alto Mar</mat-option>
                 </mat-optgroup>
                 <mat-option value="">Others</mat-option>
               </mat-select>

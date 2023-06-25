@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverServiceService } from '../driver-service.service';
 import { HttpClient } from '@angular/common/http';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-form-professional',
@@ -13,12 +14,14 @@ export class FormProfessionalPage implements OnInit {
   public submited = false;
   public professionalForm: FormGroup;
   private receivedData: any;
+  public event: Event;
 
   constructor(
     public formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private http: HttpClient,
+    private sanitizer: DomSanitizer,
     private driverService: DriverServiceService
   ) {
     this.route.queryParams.subscribe((params) => {
@@ -80,30 +83,14 @@ export class FormProfessionalPage implements OnInit {
   }*/
 
   async loadImagePH_DOC(event: any, variable: String) {
+    this.event = event;
+    if(event.target.files.length == 0){
+      return;
+    }
     const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-      this.professionalForm.get('' + variable).setValue(reader.result);
-    };
-
-    const formData = new FormData();
-    formData.append('image',file);
-
-    const response = await this.http.put("http://127.0.0.1:8000/updateImage/diogoa.cerqueira@gmail.com", formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    }).subscribe(
-      (response) => {
-        console.log(response);
-      },
-      (err) => {
-        console.log(response);
-      }
-    )
+    const imageUrl = URL.createObjectURL(file)
+    const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl)
+    this.professionalForm.get('' + variable).setValue(sanitizedUrl);
 
   }
 
