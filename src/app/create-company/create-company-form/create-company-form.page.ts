@@ -50,13 +50,13 @@ export class CreateCompanyFormPage implements OnInit {
     this.companyGroup = this.formBuilder.group(
       {
         name: ['', Validators.required],
-        rnat_1: ['', Validators.required],
-        rnat_2: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+        rnat_code: ['', Validators.required],
+        rnat_year: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
         address: ['', Validators.required],
         city: ['', Validators.required],
-        pcode: ['', Validators.required],
+        postal_code: ['', Validators.required],
         country: ['Portugal', Validators.required],
-        p_ind: ['+351', Validators.required],
+        phone_ind: ['+351', Validators.required],
         phone: ['', Validators.required],
         nif: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
         pass: [
@@ -83,7 +83,7 @@ export class CreateCompanyFormPage implements OnInit {
 
   change(event: any) {
     this.companyGroup
-      .get('rnat_1')
+      .get('rnat_code')
       .valueChanges.pipe(distinctUntilChanged())
       .subscribe((val) => {
         if (val.length == 5) {
@@ -109,20 +109,21 @@ export class CreateCompanyFormPage implements OnInit {
         password: '' + this.companyGroup.get('pass').value,
         name: '' + this.companyGroup.get('name').value,
         address: '' + this.companyGroup.get('address').value,
-        locale: '' + this.companyGroup.get('city').value,
+        city: '' + this.companyGroup.get('city').value,
         country: '' + this.companyGroup.get('country').value,
-        postalcode: '' + this.companyGroup.get('pcode').value,
+        postal_code: '' + this.companyGroup.get('postal_code').value,
         nif: '' + this.companyGroup.get('nif').value,
         phone_number:
-          this.companyGroup.get('p_ind').value +
+          this.companyGroup.get('phone_ind').value +
           '' +
           this.companyGroup.get('phone').value,
-        rnat:
+        rnat_license:
           '' +
-          this.companyGroup.get('rnat_1').value +
+          this.companyGroup.get('rnat_code').value +
           '/' +
-          this.companyGroup.get('rnat_2').value,
+          this.companyGroup.get('rnat_year').value,
       };
+      console.log(form_data)
       this.srvc.createCompany(form_data);
     }
   }

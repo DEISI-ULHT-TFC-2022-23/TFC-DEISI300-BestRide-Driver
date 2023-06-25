@@ -45,7 +45,7 @@ export class DriverServiceService {
       name: data['first_page'].name,
       dob: data['first_page'].dob,
       gender: data['first_page'].gender,
-      adress: data['first_page'].adress,
+      address: data['first_page'].address,
       city: data['first_page'].city,
       postalCode: data['first_page'].postalCode,
       country: data['first_page'].country,

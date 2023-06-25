@@ -28,7 +28,7 @@ export class LoginServiceService {
     this.http.post(environment.apiUrl + this.login_url, data).subscribe(
       (res) => {
         // save acess token
-        localStorage.setItem('token', res['AuthenticationResult'].AccessToken);
+        localStorage.setItem('token', res['token']);
         //navigate home
 
         this.getCompanyId(data['email']).subscribe((res) => {

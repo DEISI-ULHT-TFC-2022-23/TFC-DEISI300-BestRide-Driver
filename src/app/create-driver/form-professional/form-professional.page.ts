@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverServiceService } from '../driver-service.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-form-professional',
@@ -17,6 +18,7 @@ export class FormProfessionalPage implements OnInit {
     public formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private http: HttpClient,
     private driverService: DriverServiceService
   ) {
     this.route.queryParams.subscribe((params) => {
@@ -36,7 +38,7 @@ export class FormProfessionalPage implements OnInit {
       driver_l: ['', Validators.required],
       ancat_l: ['', Validators.required],
       rnaat_l: ['', Validators.required],
-      bank_iban: ['', [Validators.required, Validators.pattern('[A-Z]{2}[0-9]{2}[0-9]{21}')]],
+      bank_iban: ['', [Validators.required, Validators.pattern('^[A-Z]{2}[0-9]{2}[A-Z0-9]{1,30}$')]],
       emerg_contact_name: ['', Validators.required],
       emerg_contact_phone: ['', Validators.required],
       emerg_contact_relation: ['', Validators.required],
@@ -86,6 +88,23 @@ export class FormProfessionalPage implements OnInit {
     reader.onload = () => {
       this.professionalForm.get('' + variable).setValue(reader.result);
     };
+
+    const formData = new FormData();
+    formData.append('image',file);
+
+    const response = await this.http.put("http://127.0.0.1:8000/updateImage/diogoa.cerqueira@gmail.com", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (err) => {
+        console.log(response);
+      }
+    )
+
   }
 
   public submitForm() {
