@@ -6,12 +6,13 @@ import { environment } from 'src/environments/environment';
 import { CountryCode } from './countryCode';
 import { Language } from './language';
 
+
 @Injectable({
   providedIn: 'root',
 })
 export class DriverServiceService {
   private url_cognito_create: string = '/createDriver/';
-  private url_create_contact: string = '/postEmergencyContact/';
+  private upload_image : string = '/updateImageDriver/';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -39,7 +40,7 @@ export class DriverServiceService {
   }
 
   public create_contact(data: any) {
-    const data_form = {
+    /* const data_form = {
       email: data.email,
       password: data.password,
       name: data.name,
@@ -58,18 +59,42 @@ export class DriverServiceService {
       ANCATNumber: data.ancat_l,
       IBAN: data.bank_iban,
       docImage: data.docImage,
-    };
+    }; */
+
+    this.upload_image(data.email, data.docImage).subscribe(
+      (response) => {
+        console.log(response);
+      },
+    );
+
+
     this.http
-      .post(environment.apiUrl + this.url_cognito_create, data_form)
+      .post(environment.apiUrl + this.url_cognito_create, data)
       .subscribe((response) => {
         // type of account is driver
         localStorage.setItem('accountRole', 'driver');
-        localStorage.setItem('email', data_form.email);
-        this.router.navigate([
+        localStorage.setItem('email', data.email);
+        /* this.router.navigate([
           '/confirm-account',
           { queryParams: { source: 'driver' } },
-        ]);
+        ]); */
       }),
       (err) => {};
   }
+
+  public upload_image(email: string, file: File) {
+    const formData = new FormData();
+    formData.append('image',file);
+
+    this.http.put(enviroment.apiUrl + this.upload_image + email, formData).subscribe(
+        (response) => {
+          console.log(response)
+        },
+        (error) => {
+          console.log("aqui")
+          console.log(error)
+          console.log("erro")
+        }
+    );
+  };
 }
