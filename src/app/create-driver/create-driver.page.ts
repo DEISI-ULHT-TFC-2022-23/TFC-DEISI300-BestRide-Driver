@@ -20,8 +20,7 @@ export class CreateDriverPage implements OnInit {
   public languageList: Array<Language>
   public hidePass = true;
   public hideRepeatPass = true;
-  public event : Event;
-
+  private selectedFile: File;
   /* Password */
   public hide = true;
   public hide2 = true;
@@ -119,6 +118,7 @@ export class CreateDriverPage implements OnInit {
             this.driverForm.get('p_ind').value +
             '' +
             this.driverForm.get('phone').value,
+          profile_file: this.selectedFile
         },
       };
       //saving email
@@ -132,10 +132,10 @@ export class CreateDriverPage implements OnInit {
   }
 
   async loadImagePH_DOC(event: any, variable: String) {
-    this.event = event;
     if(event.target.files.length == 0){
       return;
     }
+    this.selectedFile = event.target.files[0];
     const file = event.target.files[0];
     const imageUrl = URL.createObjectURL(file)
     const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl)
@@ -149,4 +149,6 @@ export class CreateDriverPage implements OnInit {
       onlyself: true,
     });
   }
+
+
 }
