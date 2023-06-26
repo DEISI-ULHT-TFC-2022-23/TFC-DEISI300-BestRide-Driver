@@ -2,7 +2,6 @@
 ion-card {
   h1 {
     color: black;
-    font-weight: 900;
   }
 
   ion-button {
@@ -12,7 +11,6 @@ ion-card {
   ion-card-header {
     color: black;
     font-size: large;
-    font-weight: 900;
     text-align: center;
   }
 }
@@ -21,13 +19,11 @@ ion-content {
   --background: #00adff;
   h1 {
     color: black;
-    font-weight: 900;
     font-size: 20px;
     text-align: center;
   }
   h4 {
     color: black;
-    font-weight: 600;
     font-size: medium;
   }
   ion-button {
@@ -39,7 +35,6 @@ ion-content {
 /* Set the text color */
 ion-select::part(text) {
   color: black;
-  font-weight: 800;
 }
 
 #input {
@@ -50,18 +45,12 @@ ion-select::part(text) {
 }
 
 mat-form-field.mat-form-field {
-  font-weight: bolder;
   color: black;
   font-size: medium;
   width: 100%;
   mat-label {
     color: black;
-    font-weight: 700;
   }
-}
-
-ion-datetime {
-  padding-left: 5%;
 }
 
 #img_upload {
@@ -73,4 +62,16 @@ ion-datetime {
 ion-avatar {
   height: 100px;
   width: 100px;
+}
+
+.datetime {
+  display: inline-block;
+  font-size: 14px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-color: #E0E0E0;
+  border-width: 1px;
+  border-radius: 4px;
+  border-style: solid;
 }

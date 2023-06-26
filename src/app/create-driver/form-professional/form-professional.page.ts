@@ -15,6 +15,7 @@ export class FormProfessionalPage implements OnInit {
   public professionalForm: FormGroup;
   public event: Event;
   private receivedData: any;
+  private bi_file: File;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -32,6 +33,7 @@ export class FormProfessionalPage implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.receivedData);
     this.professionalForm = this.formBuilder.group({
       docImage: ['', Validators.required],
       nif: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
@@ -86,6 +88,7 @@ export class FormProfessionalPage implements OnInit {
     if(event.target.files.length == 0){
       return;
     }
+    this.bi_file = event.target.files[0];
     const file = event.target.files[0];
     const imageUrl = URL.createObjectURL(file)
     const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl)
@@ -95,12 +98,11 @@ export class FormProfessionalPage implements OnInit {
 
   public submitForm() {
     this.submited = true;
-    if (!this.professionalForm.valid) {
+    /* if (!this.professionalForm.valid) {
       return false;
-    } else {
+    } else { */
       const data = {
         ...this.receivedData,
-        ...this.professionalForm,
         docImage: ''+this.professionalForm.get('docImage').value,
         nif: this.professionalForm.get('nif').value,
         citizenCard: ''+this.professionalForm.get('cc').value,
@@ -110,20 +112,33 @@ export class FormProfessionalPage implements OnInit {
         ANCATNumber: ''+this.professionalForm.get('ancat_l').value,
         RNATLicense: ''+this.professionalForm.get('rnaat_l').value,
         IBAN: ''+this.professionalForm.get('bank_iban').value,
-        driver_type: ''+this.professionalForm.get('driver_type').value,
+        driverType: ''+this.professionalForm.get('driver_type').value,
         about: ''+this.professionalForm.get('about').value,
         video: ''+this.professionalForm.get('video').value,
-        activity_start: ''+this.professionalForm.get('activity_start').value,
+        activityStart: ''+this.professionalForm.get('activity_start').value,
         "emergency_contact": {
           name: this.professionalForm.get('emerg_contact_name').value,
           phone: '' + this.professionalForm.get('emerg_contact_phone').value,
           relation: this.professionalForm.get('emerg_contact_relation').value
         }
       };
-      console.log(data);
+
       this.driverService.create_contact(data);
+      /*this.driverService.upload_image(data.email, this.receivedData['profile_file']).subscribe(
+        (res) => console.log(res),
+        (err) => console.log(err),
+      );*/
+
+
+    this.driverService.upload_image(data.email, this.bi_file).subscribe(
+      (res) => console.log(res),
+      (err) => console.log(err),
+    );
+    console.log(this.receivedData);
+    console.log(this.bi_file);
+    console.log(this.receivedData['profile_file'].name);
     }
-  }
+  //}
 
   public get errorControl() {
     return this.professionalForm.controls;

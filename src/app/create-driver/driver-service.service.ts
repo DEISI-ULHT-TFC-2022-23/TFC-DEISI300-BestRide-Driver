@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -11,8 +11,8 @@ import { Language } from './language';
   providedIn: 'root',
 })
 export class DriverServiceService {
-  private url_cognito_create: string = '/createDriver/';
-  private upload_image : string = '/updateImageDriver/';
+  private createDriverUrl: string = '/createDriver/';
+  private upload_imageURl : string = '/updateImageDriver/';
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -61,15 +61,9 @@ export class DriverServiceService {
       docImage: data.docImage,
     }; */
 
-    this.upload_image(data.email, data.docImage).subscribe(
-      (response) => {
-        console.log(response);
-      },
-    );
-
 
     this.http
-      .post(environment.apiUrl + this.url_cognito_create, data)
+      .post(environment.apiUrl + this.createDriverUrl, data)
       .subscribe((response) => {
         // type of account is driver
         localStorage.setItem('accountRole', 'driver');
@@ -83,18 +77,14 @@ export class DriverServiceService {
   }
 
   public upload_image(email: string, file: File) {
+    console.log("entrou")
     const formData = new FormData();
     formData.append('image',file);
 
-    this.http.put(enviroment.apiUrl + this.upload_image + email, formData).subscribe(
-        (response) => {
-          console.log(response)
-        },
-        (error) => {
-          console.log("aqui")
-          console.log(error)
-          console.log("erro")
-        }
-    );
+    const headers = new HttpHeaders({
+      "Content-Type": "multipart/form-data; boundary=---", // Substitua o valor do boundary pelo seu valor correto
+    });
+
+    return this.http.put(environment.apiUrl + this.upload_imageURl + email, formData, { headers });
   };
 }

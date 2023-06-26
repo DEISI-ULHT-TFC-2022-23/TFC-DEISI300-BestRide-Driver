@@ -80,15 +80,24 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>{{'Birth Date' | customTranslate | async}}</mat-label>
-            <input matInput formControlName="birth" matinput matInput [matDatepicker]="picker">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error class="error " *ngIf="isSubmitted && errorControl.birth.errors?.required">
-              {{ 'Date of birth Required'| customTranslate | async }}
+          <ion-item class="datetime">
+            <ion-label position="floating">
+              {{'Date of Birth' | customTranslate | async}}</ion-label
+            >
+            <ion-datetime
+              (ionChange)="getDate($event)"
+              displayFormat="DD/MM/YYYY"
+              value="2019-02-12"
+              formControlName="birth"
+            >
+            </ion-datetime>
+            <mat-error
+              class="error-message"
+              *ngIf="isSubmitted &&  errorControl.birth.hasError('required')"
+            >
+              {{'Date Of Birth is required' | customTranslate | async}}
             </mat-error>
-          </mat-form-field>
+          </ion-item>
 
           <mat-form-field appearance="outline">
             <mat-label>{{ 'Guide People with special needs'| customTranslate | async }}</mat-label>
