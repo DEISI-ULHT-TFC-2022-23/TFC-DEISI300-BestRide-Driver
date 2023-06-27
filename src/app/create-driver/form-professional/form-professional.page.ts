@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DriverServiceService } from '../driver-service.service';
 import { HttpClient } from '@angular/common/http';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FileService } from '../file.service';
 
 @Component({
   selector: 'app-form-professional',
@@ -23,7 +24,8 @@ export class FormProfessionalPage implements OnInit {
     private router: Router,
     private http: HttpClient,
     private sanitizer: DomSanitizer,
-    private driverService: DriverServiceService
+    private driverService: DriverServiceService,
+    private fileService: FileService
   ) {
     this.route.queryParams.subscribe((params) => {
       if (params && params.email) {
@@ -54,35 +56,6 @@ export class FormProfessionalPage implements OnInit {
     });
   }
 
-  /*async getIdDocs(fileInput: any, variable: String) {
-    this.professionalForm.get('' + variable).setValue('');
-    if (fileInput.target.files && fileInput.target.files[0]) {
-      // Size Filter Bytes
-      const max_size = 20971520;
-      const allowed_types = ['image/png', 'image/jpeg'];
-      const max_height = 15200;
-      const max_width = 25600;
-
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        const image = new Image();
-        image.src = e.target.result;
-        image.onload = (rs) => {
-          const img_height = rs.currentTarget['height'];
-          const img_width = rs.currentTarget['width'];
-
-          console.log(img_height, img_width);
-          const imgBase64Path = e.target.result;
-          this.imageDoc = imgBase64Path;
-          this.professionalForm.get('' + variable).setValue('' + imgBase64Path);
-          //this.isImageSaved = true;
-        };
-      };
-
-      reader.readAsDataURL(fileInput.target.files[0]);
-    }
-  }*/
-
   async loadImagePH_DOC(event: any, variable: String) {
     this.event = event;
     if(event.target.files.length == 0){
@@ -98,9 +71,9 @@ export class FormProfessionalPage implements OnInit {
 
   public submitForm() {
     this.submited = true;
-    /* if (!this.professionalForm.valid) {
+    if (!this.professionalForm.valid) {
       return false;
-    } else { */
+    } else {
       const data = {
         ...this.receivedData,
         docImage: ''+this.professionalForm.get('docImage').value,
@@ -123,22 +96,31 @@ export class FormProfessionalPage implements OnInit {
         }
       };
 
-      this.driverService.create_contact(data);
-      /*this.driverService.upload_image(data.email, this.receivedData['profile_file']).subscribe(
-        (res) => console.log(res),
-        (err) => console.log(err),
-      );*/
+      this.driverService.create_contact(data).subscribe(
+        () => {
+          this.driverService.upload_image(data.email, this.fileService.getFile(), 'profile_photo').subscribe(
+            (res) => console.log(res),
+            (err) => console.log(err),
+          );
+          this.driverService.upload_image(data.email, this.bi_file, 'bi_photo').subscribe(
+            (res) => console.log(res),
+            (err) => console.log(err),
+          );
+          // type of account is driver
+          localStorage.setItem('accountRole', 'driver');
+          localStorage.setItem('email', data.email);
+          /* this.router.navigate([
+            '/confirm-account',
+            { queryParams: { source: 'driver' } },
+          ]); */
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
 
-
-    this.driverService.upload_image(data.email, this.bi_file).subscribe(
-      (res) => console.log(res),
-      (err) => console.log(err),
-    );
-    console.log(this.receivedData);
-    console.log(this.bi_file);
-    console.log(this.receivedData['profile_file'].name);
     }
-  //}
+  }
 
   public get errorControl() {
     return this.professionalForm.controls;

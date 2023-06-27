@@ -6,6 +6,7 @@ import { CountryCode } from './countryCode';
 import { Country } from './country';
 import { Language } from './language';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FileService } from './file.service';
 
 @Component({
   selector: 'app-create-driver',
@@ -20,7 +21,6 @@ export class CreateDriverPage implements OnInit {
   public languageList: Array<Language>
   public hidePass = true;
   public hideRepeatPass = true;
-  private selectedFile: File;
   /* Password */
   public hide = true;
   public hide2 = true;
@@ -29,7 +29,8 @@ export class CreateDriverPage implements OnInit {
     public formBuilder: FormBuilder,
     private router: Router,
     private serviceDriver: DriverServiceService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private fileService: FileService
   ) {}
 
   ngOnInit() {
@@ -118,7 +119,6 @@ export class CreateDriverPage implements OnInit {
             this.driverForm.get('p_ind').value +
             '' +
             this.driverForm.get('phone').value,
-          profile_file: this.selectedFile
         },
       };
       //saving email
@@ -135,7 +135,7 @@ export class CreateDriverPage implements OnInit {
     if(event.target.files.length == 0){
       return;
     }
-    this.selectedFile = event.target.files[0];
+    this.fileService.setFile(event.target.files[0]);
     const file = event.target.files[0];
     const imageUrl = URL.createObjectURL(file)
     const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(imageUrl)
