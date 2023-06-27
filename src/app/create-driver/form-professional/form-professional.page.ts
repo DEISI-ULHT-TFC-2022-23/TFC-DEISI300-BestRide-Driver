@@ -98,14 +98,17 @@ export class FormProfessionalPage implements OnInit {
 
       this.driverService.create_contact(data).subscribe(
         () => {
-          this.driverService.upload_image(data.email, this.fileService.getFile(), 'profile_photo').subscribe(
-            (res) => console.log(res),
+          this.driverService.upload_image(data.email, this.fileService.getFile(), 'profile_image').subscribe(
+            (res) => {
+              console.log("profile_image",res);
+              this.driverService.upload_image(data.email, this.bi_file, 'bi_image').subscribe(
+                (res) => console.log("bi_image",res),
+                (err) => console.log(err),
+              );
+            },
             (err) => console.log(err),
           );
-          this.driverService.upload_image(data.email, this.bi_file, 'bi_photo').subscribe(
-            (res) => console.log(res),
-            (err) => console.log(err),
-          );
+
           // type of account is driver
           localStorage.setItem('accountRole', 'driver');
           localStorage.setItem('email', data.email);
