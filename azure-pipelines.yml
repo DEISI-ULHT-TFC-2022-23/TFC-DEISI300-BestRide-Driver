@@ -1,0 +1,73 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '16.x'
+      displayName: 'Install Node.js'
+
+  - task: Npm@1
+    displayName: 'Install dev dependecies'
+    inputs:
+      command: custom
+      customCommand: 'install'
+      workingDir: '$(System.DefaultWorkingDirectory)'
+
+  - script: npm install -g @ionic/cli
+    displayName: 'Install Ionic Client'
+
+  - script: ionic build --prod
+    displayName: 'Build Ionic App with Production Profile'
+  
+  - task: PublishPipelineArtifact@0
+    inputs:
+      artifactName: 'ionic-app'
+      targetPath: '$(System.DefaultWorkingDirectory)/www'
+  
+  - task: DeleteFiles@1
+    displayName: 'Delete JUnit files'
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)'
+      Contents: 'TEST*.xml'
+  
+  - task: Npm@1
+    displayName: 'Test Ionic App'
+    continueOnError: true
+    inputs:
+      command: 'custom'
+      customCommand: 'run test -- --watch=false --code-coverage --karma-config $(System.DefaultWorkingDirectory)/karma.conf.js'
+      workingDir: '$(System.DefaultWorkingDirectory)'
+
+  - task: Docker@2
+    displayName: Build and push an image to container registry
+    inputs:
+      command: buildAndPush
+      repository: 'bestride-driver'
+      dockerfile: '**/Dockerfile'
+      containerRegistry: '3084a2ed-fd54-4d9e-b647-fbdabf7b1b3a'
+      tags: 'latest'
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Ionic test results'
+    condition: succeededOrFailed()
+    inputs:
+      testRunTitle: Ionic
+      testResultsFormat: JUnit
+      testResultsFiles: "**/TESTS*.xml"
+
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish code coverage Ionic results'
+    condition: succeededOrFailed()
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(Build.SourcesDirectory)/coverage/**/*cobertura-coverage.xml'
+      failIfCoverageEmpty: false
