@@ -91,7 +91,7 @@ export class FormProfessionalPage implements OnInit {
         activityStart: ''+this.professionalForm.get('activity_start').value,
         "emergency_contact": {
           name: this.professionalForm.get('emerg_contact_name').value,
-          phone: '' + this.professionalForm.get('emerg_contact_phone').value,
+          phone_number: '' + this.professionalForm.get('emerg_contact_phone').value,
           relation: this.professionalForm.get('emerg_contact_relation').value
         }
       };

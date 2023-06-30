@@ -112,9 +112,9 @@ export class CreateDriverPage implements OnInit {
           gender: '' + this.driverForm.get('gender').value,
           address: '' + this.driverForm.get('address').value,
           city: '' + this.driverForm.get('city').value,
-          postalCode: '' + this.driverForm.get('postal').value,
+          postal_code: '' + this.driverForm.get('postal').value,
           country: '' + this.driverForm.get('country').value,
-          phone:
+          phone_number:
             '' +
             this.driverForm.get('p_ind').value +
             '' +
